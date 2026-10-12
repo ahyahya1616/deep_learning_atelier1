@@ -6,7 +6,7 @@
 **Module :** Deep Learning  
 **Responsable du cours :** Pr. ELAACHAK LOTFI  
 **Auteur :** Yahya Ahmane  
-**Année Universitaire :** 2024–2025 / 2025–2026  
+**Année Universitaire :** 2026-2027
 
 ---
 
