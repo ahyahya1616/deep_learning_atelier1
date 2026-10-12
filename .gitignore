@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Datasets (large files > 100MB, download via scripts/download_data.py)
+data/
+*.csv
+*.zip
+
+# PDFs / Lab statements
+Atelier1.pdf
+*.pdf
+
+# OS generated files
+.DS_Store
+Thumbs.db
