@@ -1,8 +1,8 @@
-# Master MBD — Deep Learning : Atelier 1
+# LSI — Deep Learning : Atelier 1
 ## Régression & Classification Multi-classes avec PyTorch
 
 **Institution :** Université Abdelmalek Essaadi — Faculté des Sciences et Techniques de Tanger (FSTT)  
-**Programme :** Master Big Data & Data Science (MBD)  
+**Programme :** LSI
 **Module :** Deep Learning  
 **Responsable du cours :** Pr. ELAACHAK LOTFI  
 **Auteur :** Yahya Ahmane  
