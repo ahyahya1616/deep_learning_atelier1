@@ -17,7 +17,7 @@
 
 ## Lab Objective
 
-This report directly fulfills all requirements outlined in the official assignment ([Atelier1.pdf](Atelier1.pdf)). The objective is to design, optimize, regularize, and evaluate Deep Neural Networks (DNN) in **PyTorch** across two core tasks:
+This report directly fulfills all requirements outlined in the official assignment sheet ([Atelier1.pdf](Atelier1.pdf)). The objective is to design, optimize, regularize, and evaluate Deep Neural Networks (DNN) in **PyTorch** across two core tasks:
 1. **Part 1 (Regression):** Stock price prediction on the **NYSE dataset**.
 2. **Part 2 (Multi-Class Classification):** Industrial machine failure diagnosis on the **AI4I 2020 Predictive Maintenance dataset**.
 
@@ -65,7 +65,7 @@ jupyter notebook notebooks/
 
 ### Q1. Exploratory Data Analysis & Visualization
 - **Stock Trends & Volatility:** Time-series analysis across major equities (AAPL, MSFT, GOOGL, AMZN) displays non-stationary price evolution with periods of high volatility, requiring normalization (`MinMaxScaler`).
-- **Feature Correlation:** `open`, `low`, and `high` exhibit near-perfect collinearity ($r \ge 0.999$) with `close`, while `volume` exhibits low linear correlation ($r \approx -0.10$).
+- **Feature Correlation:** `open`, `low`, and `high` exhibit near-perfect collinearity (`r ≥ 0.999`) with `close`, while `volume` exhibits low linear correlation (`r ≈ -0.10`).
 
 <p align="center">
   <img src="figures/part1_q1_stock_trends.png" width="48%" alt="Stock Trends" />
@@ -74,8 +74,10 @@ jupyter notebook notebooks/
 
 ### Q2. PyTorch Deep Neural Network Architecture
 - **Architecture:** Fully connected MLP: `Input(4) -> Linear(64) -> ReLU -> Linear(32) -> ReLU -> Linear(1)`.
-- **Loss Function:** Mean Squared Error (MSE Loss):
-  $$\mathcal{L}_{\text{MSE}}(y, \hat{y}) = \frac{1}{N}\sum_{i=1}^{N}(y_i - \hat{y}_i)^2$$
+- **Loss Function:** Mean Squared Error (`nn.MSELoss`):
+  ```text
+  MSE = (1 / N) * Σ (y_actual - y_predicted)²
+  ```
 
 <p align="center">
   <img src="figures/part1_q2_model_architecture.png" width="70%" alt="Regression Architecture" />
@@ -84,12 +86,12 @@ jupyter notebook notebooks/
 ### Q3. Hyperparameter Tuning via GridSearch CV
 Using 3-Fold Cross-Validation over optimizers (`Adam`, `SGD`), learning rates (`0.01`, `0.001`), architectures, and batch sizes:
 - **Best Configuration:** **Adam** optimizer, `lr = 0.01`, `batch_size = 64`, layers `[64, 32]`.
-- **Performance:** Achieved the lowest cross-validation MSE ($0.00029$) and highest $R^2$ ($0.99971$).
+- **Performance:** Achieved the lowest cross-validation MSE (0.00029) and highest R² (0.99971).
 
 ### Q4. Learning Curves & Interpretation (Loss & Accuracy per Epoch)
 The optimal model was trained for 40 epochs:
 - **Loss Curve:** Train and test MSE drop rapidly within the first 5 epochs (< 0.001) and stabilize cleanly with no divergence, confirming smooth convergence without early overfitting.
-- **Accuracy Metric:** Tracked using $R^2$ and a $\pm 5\%$ relative tolerance accuracy ($\left|\frac{\hat{y}-y}{y}\right| \le 0.05$). The model achieved **98.2% test tolerance accuracy** and **$R^2 > 0.998$**.
+- **Accuracy Metric:** Tracked using R² score and a ±5% relative tolerance accuracy (`|y_pred - y_true| / y_true ≤ 0.05`). The model achieved **98.2% test tolerance accuracy** and **R² > 0.998**.
 
 <p align="center">
   <img src="figures/part1_q4_loss_epochs.png" width="48%" alt="Loss over Epochs" />
@@ -97,19 +99,19 @@ The optimal model was trained for 40 epochs:
 </p>
 
 ### Q5. Regularization Techniques & Model Comparison
-We compared the baseline against a regularized model combining **Dropout ($p=0.2$)**, **Batch Normalization**, and **Weight Decay ($10^{-4}$)**:
+We compared the baseline against a regularized model combining **Dropout (p = 0.2)**, **Batch Normalization**, and **Weight Decay (1e-4)**:
 
-| Model Configuration | Test MSE | Test RMSE ($) | Test MAE ($) | $R^2$ Score | Tolerance Accuracy ($\pm 5\%$) |
+| Model Configuration | Test MSE | Test RMSE (USD) | Test MAE (USD) | R² Score | Tolerance Accuracy (±5%) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Baseline DNN** | **0.00018** | **$1.82** | **$0.95** | **0.9984** | **98.2%** |
-| **Regularized (Dropout + BN + L2)** | 0.00942 | $26.96$ | $16.15$ | 0.8781 | 84.3% |
+| **Baseline DNN** | **0.00018** | **1.82** | **0.95** | **0.9984** | **98.2%** |
+| **Regularized (Dropout + BN + L2)** | 0.00942 | 26.96 | 16.15 | 0.8781 | 84.3% |
 
 <p align="center">
   <img src="figures/part1_q5_actual_vs_predicted.png" width="48%" alt="Actual vs Predicted" />
   <img src="figures/part1_q5_regularization_comparison.png" width="48%" alt="Regularization Comparison" />
 </p>
 
-- **Interpretation:** In continuous regression where inputs are already strongly collinear with the target, heavy Dropout ($p=0.2$) causes shrinkage on extreme high-price stocks. The baseline offers superior raw precision, while regularization stabilizes gradient variance against out-of-distribution shifts.
+- **Interpretation:** In continuous regression where inputs are already strongly collinear with the target, heavy Dropout (p = 0.2) causes shrinkage on extreme high-price stocks. The baseline offers superior raw precision, while regularization stabilizes gradient variance against out-of-distribution shifts.
 
 ---
 
@@ -119,8 +121,11 @@ We compared the baseline against a regularized model combining **Dropout ($p=0.2
 
 ### Q1. Data Preprocessing & Cleaning
 - **Identifier Removal:** Dropped non-predictive features (`UDI`, `Product ID`).
-- **Data Leakage Elimination:** Dropped the binary indicator `Machine failure` (target proxy).
-- **Feature Engineering:** Added thermodynamic temperature difference: $\text{Temp\_Diff} = T_{\text{process}} - T_{\text{air}}$.
+- **Data Leakage Elimination:** Dropped the binary indicator `Machine failure` (direct proxy of target `Failure Type`).
+- **Feature Engineering:** Added thermodynamic temperature difference:
+  ```text
+  Temp_Diff = Process_temperature - Air_temperature
+  ```
 - **Standardization:** Applied `StandardScaler` fitted **strictly on the training split**.
 
 ### Q2. Exploratory Data Analysis & Class Imbalance
@@ -142,7 +147,7 @@ We compared the baseline against a regularized model combining **Dropout ($p=0.2
 
 ### Q4. PyTorch Multi-Class Architecture
 - **Architecture:** `Input(7) -> Linear(128) -> LeakyReLU -> Linear(64) -> LeakyReLU -> Linear(6) -> Softmax`.
-- **Loss Function:** Categorical Cross-Entropy Loss ($\mathcal{L}_{\text{CE}}$).
+- **Loss Function:** Categorical Cross-Entropy Loss (`nn.CrossEntropyLoss`).
 
 <p align="center">
   <img src="figures/part2_q4_model_architecture.png" width="70%" alt="Classification Architecture" />
@@ -182,7 +187,7 @@ Evaluated on 2,000 real-world, unaugmented test instances:
 
 ### Q8. Regularization Effect & One-vs-Rest ROC / AUC Curves
 - **Macro-Average ROC-AUC:** **0.911** across all 6 classes.
-- Physical failure modes reach near-perfect discrimination: Heat Dissipation ($0.997$), Power Failure ($0.991$), and Overstrain ($0.994$).
+- Physical failure modes reach near-perfect discrimination: Heat Dissipation (0.997), Power Failure (0.991), and Overstrain (0.994).
 - Regularization (Dropout + Weight Decay) prevented overfitting on the synthesized minority class boundaries.
 
 <p align="center">
