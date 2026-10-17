@@ -489,4 +489,4 @@ jupyter notebook notebooks/part2_classification.ipynb
 
 ---
 
-*Fin du rapport de l'Atelier 1 — Master Big Data & Data Science, FST Tanger.*
+*Fin du rapport de l'Atelier 1 — LSI , FST Tanger.*
