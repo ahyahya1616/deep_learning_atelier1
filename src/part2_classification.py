@@ -1,7 +1,7 @@
 """
 Lab 1 - Part 2: Deep Neural Networks for Multi-Class Classification (Predictive Maintenance Dataset)
 Author: yahya-ahmane
-Master: MBD - Deep Learning, FST Tanger
+Program: LSI (Génie Logiciel et Systèmes Intelligents) - Deep Learning, FST Tanger
 Pr. ELAACHAK LOTFI
 """
 

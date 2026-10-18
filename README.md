@@ -33,9 +33,6 @@ lab1/
 │   ├── nyse/
 │   └── predictive_maintenance/
 ├── figures/                 # Evaluation plots and figures (Q1 to Q8)
-├── notebooks/               # Interactive Jupyter notebooks
-│   ├── part1_regression.ipynb
-│   └── part2_classification.ipynb
 ├── scripts/                 # Utility scripts (e.g. data downloader)
 │   └── download_data.py
 └── src/                     # Standalone Python pipelines
@@ -47,14 +44,11 @@ lab1/
 # Setup environment & run pipelines
 python3 -m venv .venv && source .venv/bin/activate
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-pip install scikit-learn pandas numpy matplotlib seaborn imbalanced-learn jupyter
+pip install scikit-learn pandas numpy matplotlib seaborn imbalanced-learn
 
 # Execute standalone pipelines:
 python3 src/part1_regression.py
 python3 src/part2_classification.py
-
-# Or launch Jupyter Notebooks:
-jupyter notebook notebooks/
 ```
 
 ---

@@ -1,7 +1,7 @@
 """
 Lab 1 - Part 1: Deep Neural Networks for Regression (NYSE Dataset)
 Author: yahya-ahmane
-Master: MBD - Deep Learning, FST Tanger
+Program: LSI (Génie Logiciel et Systèmes Intelligents) - Deep Learning, FST Tanger
 Pr. ELAACHAK LOTFI
 """
 
